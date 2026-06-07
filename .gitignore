@@ -1,0 +1,15 @@
+### Global / Root Ignores ###
+.metadata/
+*.log
+.env
+.env.local
+
+### OS Specific ###
+.DS_Store
+Thumbs.db
+
+### Eclipse / STS (Root level protections) ###
+.project
+.classpath
+.settings/
+bin/

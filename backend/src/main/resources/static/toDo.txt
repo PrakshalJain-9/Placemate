@@ -1,0 +1,5 @@
+Event driven email sending.
+Make the student profile (taking student resume) and other notable achievements.
+Create a shareable link of student profiles without them requiring to login showing them just student profiles
+Students can give the admin a call with basic problem they are facing so that admin can handle their problems via the app only
+
