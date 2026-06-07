@@ -6,7 +6,7 @@ export const requestEmailOtp = async (email) => {
     try {
         const response = await api.post(
             `/api/auth/superadmin/sendotp`,
-            { "emailId": email }
+            { "email": email }
         );
 
         return response.data;
@@ -16,29 +16,29 @@ export const requestEmailOtp = async (email) => {
 }
 
 
-export const verifyOtpAndRegister = async (userRegisterRequest) => {
+export const verifyOtpAndRegister = async (payload) => {
     try {
+        // Payload must match SuperAdminRegisterRequestDTO exactly:
+        // { superAdminId, emailId, password, role, collegeDTO, otp }
         const response = await api.post(
             `/api/auth/superadmin/validateotp`,
-            userRegisterRequest
-        )
+            payload
+        );
         return response.data;
     } catch (error) {
         throw error;
     }
 }
 
+
 export const logout = async () => {
     try {
-        await api.post(
-            `/api/auth/logout   `
-        )
-    } catch (error) {
-        throw error;
-    } finally {
-        window.location.href = '\login';
+        await api.post(`/api/auth/logout`);
+    } catch {
+        // Ignore errors — AuthContext.logoutUser handles the redirect
     }
 };
+
 
 
 export const loginWithGoogle = () => {
