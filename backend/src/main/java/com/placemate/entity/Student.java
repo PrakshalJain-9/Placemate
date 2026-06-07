@@ -4,6 +4,7 @@ import com.placemate.entity.enums.StudentStatus;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -54,7 +55,7 @@ public class Student {
 	@ToString.Include
 	private String password;
 	
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status")
 	private StudentStatus status;
 	
