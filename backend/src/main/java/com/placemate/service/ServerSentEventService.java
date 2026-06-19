@@ -46,7 +46,7 @@ public class ServerSentEventService {
 									
 		});
 		
-		emitters.remove(deadEmitters);
+		emitters.removeAll(deadEmitters);
 	}
 	
 }

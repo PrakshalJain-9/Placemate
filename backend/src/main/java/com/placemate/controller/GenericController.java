@@ -23,9 +23,4 @@ public class GenericController {
 		return ResponseEntity.ok(SecurityUtils.getPrincipal());
 	}
 	
-	@PostMapping("/api/auth/logout")
-	public ResponseEntity<?> logoutUser(){
-		authService.logout();
-		return ResponseEntity.ok().build();
-	}
 }

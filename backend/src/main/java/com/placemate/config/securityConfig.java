@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,10 +16,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.placemate.security.filters.JwtAuthenticationFilter;
-import com.placemate.security.successhandler.OAuth2SuccessHandler;
+import com.placemate.security.handlers.logout.JwtLogoutHandler;
+import com.placemate.security.handlers.successhandler.OAuth2SuccessHandler;
 import com.placemate.service.StudentUserDetailsService;
 import com.placemate.service.SuperAdminUserDetailsService;
 
@@ -37,6 +40,7 @@ public class securityConfig {
 	private final  PasswordEncoder passwordEncoder;
 	private final OAuth2SuccessHandler successHandler;
 	private final CorsConfigurationSource corsConfigurationSource;
+	private final JwtLogoutHandler jwtLogoutHandler;
 	
 	
 	@Bean
@@ -53,6 +57,11 @@ public class securityConfig {
 						response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 					}))
 					.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+					.logout(logout ->
+										logout.logoutUrl("/api/auth/logout")
+											  .addLogoutHandler(jwtLogoutHandler)
+											  .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+		)
 				.build();
 	}
 	

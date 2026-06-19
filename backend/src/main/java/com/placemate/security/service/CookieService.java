@@ -22,8 +22,7 @@ public class CookieService {
 	private long refreshTokenExpireTime;
 	@Value("${jwt.accessExpirationTime}")
 	private long accessTokenExpireTime;
-	
-	
+
 	@Value("${cookie.secure}")
 	private boolean isCookieSecure;
 
@@ -33,59 +32,45 @@ public class CookieService {
 
 	public void addTokenToCookie(TokenPair pair) {
 		String sameSitePolicy = isCookieSecure ? "None" : "Lax";
-		ResponseCookie accessCookie = ResponseCookie.from("accessToken", pair.getAccessToken())
-										            .httpOnly(true)
-										            .secure(isCookieSecure) 
-										            .path("/")
-										            .maxAge(accessTokenExpireTime / 1000)
-										            .sameSite(sameSitePolicy) 
-										            .build();
-		
-		
-		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", pair.getRefreshToken())
-										            .httpOnly(true)
-										            .secure(isCookieSecure)
-										            .path("/")
-										            .maxAge(refreshTokenExpireTime / 1000)
-										            .sameSite(sameSitePolicy)
-										            .build();
-		
-		
+		ResponseCookie accessCookie = ResponseCookie.from("accessToken", pair.getAccessToken()).httpOnly(true)
+				.secure(isCookieSecure).path("/").maxAge(accessTokenExpireTime / 1000).sameSite(sameSitePolicy).build();
+
+		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", pair.getRefreshToken()).httpOnly(true)
+				.secure(isCookieSecure).path("/").maxAge(refreshTokenExpireTime / 1000).sameSite(sameSitePolicy)
+				.build();
+
 		resp.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
-	    resp.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+		resp.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 	}
 
+	public void deleteAuthCookies() {
 
-	public void deleteCookie(String cookieName) {
-	    Cookie cookie = new Cookie(cookieName, null);
-	    cookie.setPath("/");
-	    cookie.setHttpOnly(true);
-	    cookie.setMaxAge(0);
-	    resp.addCookie(cookie);
-	}
-	
-	
-	public void deleteAllCookies() {
-		Cookie[] cookies = request.getCookies();
 		String refreshToken = null;
-		if (cookies == null) {
-	        return; 
-	    }
-		for (var cookie : cookies) {
-			if (cookie.getName().equalsIgnoreCase("refreshToken"))
-				refreshToken = cookie.getValue();
-
-			deleteCookie(cookie.getName());
-
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equalsIgnoreCase("refreshToken")) {
+					refreshToken = cookie.getValue();
+				}
+			}
 		}
 
-		refreshTokenService.deleteToken(refreshToken);
+		String sameSitePolicy = isCookieSecure ? "None" : "Lax";
+		ResponseCookie accessCookie = ResponseCookie.from("accessToken", "").httpOnly(true).secure(isCookieSecure)
+				.path("/").maxAge(0).sameSite(sameSitePolicy).build();
+
+		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", "").httpOnly(true).secure(isCookieSecure)
+				.path("/").maxAge(0).sameSite(sameSitePolicy).build();
+
+		ResponseCookie sessionCookie = ResponseCookie.from("JSESSIONID", "").httpOnly(true).secure(isCookieSecure)
+				.path("/").maxAge(0).sameSite(sameSitePolicy).build();
+
+		resp.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+		resp.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+		resp.addHeader(HttpHeaders.SET_COOKIE, sessionCookie.toString());
+
+		if (refreshToken != null) {
+			refreshTokenService.deleteToken(refreshToken);
+		}
 	}
 }
-
-
-
-
-
-
-

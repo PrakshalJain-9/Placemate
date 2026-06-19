@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		
 		String jwtToken = getJwtToken(request);
 		if(!jwtService.isValidToken(jwtToken) || !jwtService.isAccessToken(jwtToken)) {
-			cookieService.deleteAllCookies();
+			cookieService.deleteAuthCookies();
 			filterChain.doFilter(request, response);
 			return;
 		}

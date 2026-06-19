@@ -1,4 +1,4 @@
-package com.placemate.security.successhandler;
+package com.placemate.security.handlers.successhandler;
 
 import java.io.IOException;
 import java.util.List;
