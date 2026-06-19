@@ -110,6 +110,17 @@ public class StudentService {
 		
 		eventPublisher.publishEvent(new OnBoardinReminderRequestedEvent(yetToJoinStudents, college.getCollegeName()));
 	}
+	
+	public void sendReminderMailTo(int studentId) {
+		Student student = studentRepository.findById(studentId).orElseThrow(() -> new StudentNotFoundException(String.format(studentNotFoundTemplate, studentId)));
+		College college = collegeService.findByCollegeId(SecurityUtils.getCollegeId());
+		
+		if(student.getStatus() == StudentStatus.JOINED) {
+			throw new RuntimeException("Student has already joined.");
+		}
+			
+		eventPublisher.publishEvent(new OnBoardinReminderRequestedEvent(List.of(student), college.getCollegeName()));
+	}
 }
 
 

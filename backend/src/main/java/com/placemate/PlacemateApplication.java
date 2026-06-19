@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.placemate.repository.jpa")
-@EnableRedisRepositories(basePackages = "com.placemate.repository.redis", enableKeyspaceEvents = EnableKeyspaceEvents.ON_STARTUP)
 @PropertySource("classpath:messages.properties")
 @EnableCaching
 @EnableAsync

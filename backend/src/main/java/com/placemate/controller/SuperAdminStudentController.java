@@ -54,13 +54,20 @@ public class SuperAdminStudentController {
 	@GetMapping("/superadmin/students")
 	public ResponseEntity<?> pagedStudentList(Pageable pageable, @RequestParam(name = "rollNumber", required = false, defaultValue = "") String rollNumber){
 		return ResponseEntity.ok(studentService.findStudentByPage(pageable, rollNumber));
-		
 	}
 	
 	
 	@PostMapping("/superadmin/reminder")
 	public ResponseEntity<?> remindAllPendingStudentToJoin(){
 		studentService.sendReminderMails();
+		return ResponseEntity.accepted().build();
+	}
+	
+	
+	@PostMapping("/superadmin/students/renotify/{id}")
+	@PreAuthorize("@studentSecurity.isOwner(#studentId)")
+	public ResponseEntity<?> remindStudent(@PathVariable("id") int studentId){
+		studentService.sendReminderMailTo(studentId);
 		return ResponseEntity.accepted().build();
 	}
 }
