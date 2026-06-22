@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
+public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	
 	private final StudentService studentService;
 	private final JWTService jwtService;	
@@ -72,6 +72,4 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
 		getRedirectStrategy().sendRedirect(request, response, redirectUri);
 		
 	}
-	
-	
 }

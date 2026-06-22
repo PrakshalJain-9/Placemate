@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity
-public class securityConfig {
+public class SecurityConfig {
 	
 	
 	private final StudentUserDetailsService studentDetailsService;

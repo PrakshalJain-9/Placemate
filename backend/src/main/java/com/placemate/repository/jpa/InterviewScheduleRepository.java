@@ -65,7 +65,6 @@ public interface InterviewScheduleRepository extends JpaRepository<InterviewSche
 	            @Param("collegeId") int collegeId, 
 	            Pageable pageable
 	    );
-	
 }
 
 

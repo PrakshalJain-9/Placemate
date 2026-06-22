@@ -48,8 +48,7 @@ public class Room {
 	@JoinColumn(name = "college_id")
 	@Nonnull
 	private College college;
-	
-	
+
 	@Version
 	private Long version;
 

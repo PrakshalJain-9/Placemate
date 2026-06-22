@@ -43,7 +43,6 @@ public class InterviewScheduleService {
 	private RoomMapper roomMapper;
 	private ApplicationEventPublisher publisher;
 	
-
 	
 	@Transactional
 	public InterviewScheduleSummaryDTO createInterviewSchedule(InterviewScheduleCreateDTO interviewCreateDTO) {
