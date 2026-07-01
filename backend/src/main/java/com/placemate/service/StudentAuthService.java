@@ -38,7 +38,7 @@ public class StudentAuthService {
 		String otp = null;	
 		
 		Student student = studentRepository.findStudentByEmailId(email).orElse(null);
-		if(student == null || student.getPassword() != null) {
+		if(student == null || student.getStatus() == StudentStatus.JOINED) {
 			throw new UserNotAllowedException("User with the id is not allowed");
 		}else	
 			otp = otpService.generateOTP(email);

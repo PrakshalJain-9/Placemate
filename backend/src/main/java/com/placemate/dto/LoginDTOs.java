@@ -1,5 +1,7 @@
 package com.placemate.dto;
 
+import org.hibernate.validator.constraints.Length;
+
 import lombok.Builder;
 import lombok.With;
 import lombok.extern.jackson.Jacksonized;
@@ -25,6 +27,6 @@ public class LoginDTOs {
 	@Builder
 	@With
 	@Jacksonized
-	public record SetPasswordDTO(String password, String token) {}
+	public record SetPasswordDTO(@Length(min = 8) String password, String token) {}
 	
 }

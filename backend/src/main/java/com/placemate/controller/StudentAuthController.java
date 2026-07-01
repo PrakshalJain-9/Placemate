@@ -1,6 +1,7 @@
 package com.placemate.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class StudentAuthController {
 	
 	// This sets the password for the very first time
 	@PostMapping("/auth/student/setpassword")
-	public ResponseEntity<?> setUserPassword(@RequestBody SetPasswordDTO passwordDTO){
+	public ResponseEntity<?> setUserPassword(@Validated @RequestBody SetPasswordDTO passwordDTO){
 		studentAuthService.handleFirstTimePassword(passwordDTO);
 		return ResponseEntity.ok().build();
 	}
